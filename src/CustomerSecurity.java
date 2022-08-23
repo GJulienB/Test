@@ -1,19 +1,35 @@
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CustomerSecurity {
-    public static void insertCustomerNumber(){
+
+   public static boolean findCustomer(String input){
+       boolean foundCustomer = false;
+       ArrayList<ArrayList<String>> customerData = CustomerDatabase.getCustomerData();
+       for (ArrayList<String> singleCustomer : customerData) {
+           if(input.equals(singleCustomer.get(1))){
+              foundCustomer = true;
+              break;
+           }
+       }
+       return foundCustomer;
+   }
+   
+    public static void insertCustomerNumber() {
         Scanner sc = new Scanner(System.in);
-        int knummer = sc.nextInt();
-        if (knummer == 22004) {
+        String knummer = sc.nextLine();
+        boolean isCustomer = findCustomer(knummer);
+        if (isCustomer) {
             System.out.println("Richtige Kundennummer! Herzlich Willkommen");
         } else {
             System.out.println("Falsche Kontonummer bitte erneut eingeben!");
-            ATMOutput.startText();
+            insertCustomerNumber();
 
         }
     }
 
-    public static void insertPin(){
+    public static void insertPin() {
         final String PIN = "1234";
         boolean wrongPin = true;
 
@@ -25,17 +41,17 @@ public class CustomerSecurity {
             if (!(inputPin.equals(PIN))) {
                 System.out.println("Bitte Pin erneut eingeben!");
             } else {
-                System.out.println("Willkommen");
+                System.out.println("");
                 wrongPin = false;
-                Account account = new Account("Frau Wagner", "22004");
+                Account account = new Account();
                 account.showMenu();
             }
         }
-        if(wrongPin){
+        if (wrongPin) {
             System.out.println("Sie haben 3/3 Versuche, ihr Konto ist gesperrt bitte kontaktieren Sie einen Mitarbeiter!");
         }
     }
 
 
-
 }
+
